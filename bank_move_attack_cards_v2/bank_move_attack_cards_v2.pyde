@@ -216,13 +216,13 @@ def movement_card(x, y, p, k, f):
             else:
                 
                 if p[k] == 'f':
-                    image(move_forward, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
+                    image(move_forward, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
         
                 elif p[k] == 'r':
-                    image(move_right, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
+                    image(move_right, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
         
                 elif p[k] == 'l':
-                    image(move_left, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
+                    image(move_left, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
         else:
             if p[k] == 'f':
                 image(move_forward, (width*x), (height*y), (width *0.05), (height* 0.13))
