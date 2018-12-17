@@ -66,7 +66,7 @@ def movement_cards(k, p):
     neutral_movement_cards.append(p[k])
     del p[k]
 
-#git is working, for real now!!. second change 
+#git is working, for real now!!. 
 
 
 
