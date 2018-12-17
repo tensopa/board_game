@@ -66,7 +66,7 @@ def movement_cards(k, p):
     neutral_movement_cards.append(p[k])
     del p[k]
 
-#git is working, for real now!!. second change 
+#git is working, for real now!!. 
 
 
 
@@ -206,23 +206,23 @@ def movement_card(x, y, p, k, f):
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
             if p == Player_three_movement_card or p == Player_four_movement_card:
                 if p[k] == 'f':
-                    image(move_forward, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
+                    image(move_forward, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
     
                 elif p[k] == 'r':
-                    image(move_right, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
+                    image(move_right, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
         
                 elif p[k] == 'l':
-                    image(move_left, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
+                    image(move_left, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
             else:
                 
                 if p[k] == 'f':
-                    image(move_forward, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
+                    image(move_forward, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
         
                 elif p[k] == 'r':
-                    image(move_right, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
+                    image(move_right, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
         
                 elif p[k] == 'l':
-                    image(move_left, (width*x), (height* (y+0.02)), (width *0.05), (height* 0.13))
+                    image(move_left, (width*x), (height* (y-0.02)), (width *0.05), (height* 0.13))
         else:
             if p[k] == 'f':
                 image(move_forward, (width*x), (height*y), (width *0.05), (height* 0.13))
