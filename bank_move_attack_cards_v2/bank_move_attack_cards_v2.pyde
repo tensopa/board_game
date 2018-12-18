@@ -1,5 +1,5 @@
 import random
-#123
+
 player_names = {1: 'player ONE', 2: 'player TWO', 3: 'player THREE', 4: 'player FOUR'}
 bank = {'player ONE': 0, 'player TWO': 0, 'player THREE': 0, 'player FOUR': 0}
 turnOfPlayer = 0
