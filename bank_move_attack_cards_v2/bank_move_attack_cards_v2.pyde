@@ -249,9 +249,7 @@ def attack_card(x, y, k, f):
     p = powerUpDownCard_stack[k]
     if f == 'buy':
         if mousePressed:
-            if (mouseX > (width / 100) * x and mouseY > (height / 100) * y) and (
-                    mouseX < ((width / 100) * x) + ((width / 100) * 5) and mouseY < ((height / 100) * y) + (
-                    (height / 100) * 13)):
+            if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
                 if turnOfPlayer == 0:
                     pass
                 else:
@@ -318,7 +316,7 @@ def attack_card(x, y, k, f):
                 image(nuke,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
         
             elif powerUpDownCard_stack[k] == 'used':
-                image(sold,  width* (x-0.0025), height* (y-0.0025), width8(0.05+0.005), height* (0.13+0.005))    
+                image(sold,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))    
 
 
 
