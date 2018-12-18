@@ -185,7 +185,7 @@ def text_display():
     # attack cards prise text
     attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs '
     fill(250, 250,250)
-    textSize(width * 1)
+    textSize(width * 0.01)
     text(attack_cards_price, width  * 0.89, height * 0.46)
 
 
@@ -282,43 +282,43 @@ def attack_card(x, y, k, f):
                                 powerUpDownCard_stack[k] = 'used'
     elif f == 'display':            
         if powerUpDownCard_stack[k] == 'mk.I':
-            image(mk_I_laser, (width / 100) * x, (height / 100) * y, (width / 100) * 5, (height / 100) * 13)
+            image(mk_I_laser, (width* x), (height* y), (width* 0.05), (height* 0.13))
     
         elif powerUpDownCard_stack[k] == 'mk.II':
-            image(mk_II_laser, (width / 100) * x, (height / 100) * y, (width / 100) * 5, (height / 100) * 13)
+            image(mk_II_laser, (width* x), (height* y), (width* 0.05), (height* 0.13))
     
         elif powerUpDownCard_stack[k] == 'shield':
-            image(shield, (width / 100) * x, (height / 100) * y, (width / 100) * 5, (height / 100) * 13)
+            image(shield, (width* x), (height* y), (width* 0.05), (height* 0.13))
     
         elif powerUpDownCard_stack[k] == 'blockade':
-            image(blockade, (width / 100) * x, (height / 100) * y, (width / 100) * 5, (height / 100) * 13)
+            image(blockade, (width* x), (height* y), (width* 0.05), (height* 0.13))
     
         elif powerUpDownCard_stack[k] == 'nuke':
-            image(nuke, (width / 100) * x, (height / 100) * y, (width / 100) * 5, (height / 100) * 13)
+            image(nuke, (width* x), (height* y), (width* 0.05), (height* 0.13))
     
         elif powerUpDownCard_stack[k] == 'used':
-            image(sold, (width / 100) * x, (height / 100) * y, (width / 100) * 5, (height / 100) * 13) 
+            image(sold, (width* x), (height* y), (width* 0.05), (height* 0.13))
         
         
-        if (mouseX > (width / 100) * x and mouseY > (height / 100) * y) and (mouseX < ((width / 100) * x) + ((width / 100) * 5) and mouseY < ((height / 100) * y) + ((height / 100) * 13)):
+        if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
         
             if powerUpDownCard_stack[k] == 'mk.I':
-                image(mk_I_laser, (width / 100) * (x-0.25), (height / 100) * (y-0.25), (width / 100) *(5+0.5), (height / 100) * (13+0.5))
+                image(mk_I_laser, width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
         
             elif powerUpDownCard_stack[k] == 'mk.II':
-                image(mk_II_laser, (width / 100) * (x-0.25), (height / 100) * (y-0.25), (width / 100) * (5+0.5), (height / 100) * (13+0.5))
+                image(mk_II_laser,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
         
             elif powerUpDownCard_stack[k] == 'shield':
-                image(shield, (width / 100) * (x-0.25), (height / 100) * (y-0.25), (width / 100) * (5+0.5), (height / 100) * (13+0.5))
+                image(shield,  width* (x -0.0025), height* (y -0.0025), width*(0.05+0.005), height* (0.13+0.005))
         
             elif powerUpDownCard_stack[k] == 'blockade':
-                image(blockade, (width / 100) * (x-0.25), (height / 100) * (y-0.25), (width / 100) * (5+0.5), (height / 100) * (13+0.5))
+                image(blockade,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
         
             elif powerUpDownCard_stack[k] == 'nuke':
-                image(nuke, (width / 100) * (x-0.25), (height / 100) * (y-0.25), (width / 100) * (5+0.5), (height / 100) * (13+0.5))
+                image(nuke,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
         
             elif powerUpDownCard_stack[k] == 'used':
-                image(sold, (width / 100) * (x-0.25), (height / 100) * (y-0.25), (width / 100) * (5+0.5), (height / 100) * (13+0.5))        
+                image(sold,  width* (x-0.0025), height* (y-0.0025), width8(0.05+0.005), height* (0.13+0.005))    
 
 
 
@@ -483,33 +483,33 @@ def draw():
     # displays the attack and defence cards that are still available on the screen
     # attack_card(x,y,card name, if and elif ):
 
-    attack_card(57.5, 23.5, 0, 'display')
-    attack_card(62.6, 23.5, 1, 'display')
-    attack_card(67.7, 23.5, 2, 'display')
-    attack_card(72.8, 23.5, 3, 'display')
-    attack_card(77.9, 23.5, 4, 'display')
-    attack_card(83, 23.5, 5, 'display')
+    attack_card(0.575, 0.235, 0, 'display')
+    attack_card(0.626, 0.235, 1, 'display')
+    attack_card(0.677, 0.235, 2, 'display')
+    attack_card(0.728, 0.235, 3, 'display')
+    attack_card(0.779, 0.235, 4, 'display')
+    attack_card(0.83, 0.235, 5, 'display')
 
-    attack_card(57.5, 36.7, 6, 'display')
-    attack_card(62.6, 36.7, 7, 'display')
-    attack_card(67.7, 36.7, 8, 'display')
-    attack_card(72.8, 36.7, 9, 'display')
-    attack_card(77.9, 36.7, 10, 'display')
-    attack_card(83, 36.7, 11, 'display')
+    attack_card(0.575, 0.367, 6, 'display')
+    attack_card(0.626, 0.367, 7, 'display')
+    attack_card(0.677, 0.367, 8, 'display')
+    attack_card(0.728, 0.367, 9, 'display')
+    attack_card(0.779, 0.367, 10, 'display')
+    attack_card(0.83, 0.367, 11, 'display')
 
-    attack_card(57.5, 49.9, 12, 'display')
-    attack_card(62.6, 49.9, 13, 'display')
-    attack_card(67.7, 49.9, 14, 'display')
-    attack_card(72.8, 49.9, 15, 'display')
-    attack_card(77.9, 49.9, 16, 'display')
-    attack_card(83, 49.9, 17, 'display')
+    attack_card(0.575, 0.499, 12, 'display')
+    attack_card(0.626, 0.499, 13, 'display')
+    attack_card(0.677, 0.499, 14, 'display')
+    attack_card(0.728, 0.499, 15, 'display')
+    attack_card(0.779, 0.499, 16, 'display')
+    attack_card(0.83, 0.499, 17, 'display')
 
-    attack_card(57.5, 63.1, 18, 'display')
-    attack_card(62.6, 63.1, 19, 'display')
-    attack_card(67.7, 63.1, 20, 'display')
-    attack_card(72.8, 63.1, 21, 'display')
-    attack_card(77.9, 63.1, 22, 'display')
-    attack_card(83, 63.1, 23, 'display')
+    attack_card(0.575, 0.631, 18, 'display')
+    attack_card(0.626, 0.631, 19, 'display')
+    attack_card(0.677, 0.631, 20, 'display')
+    attack_card(0.728, 0.631, 21, 'display')
+    attack_card(0.779, 0.631, 22, 'display')
+    attack_card(0.83, 0.631, 23, 'display')
 
     # displays the attack and defence cards owned by the player on the screen next to the player spaceship
     #   power_card(x,y,card number,if and elif,player power card stack)
@@ -607,34 +607,33 @@ def mousePressed():
 
     # checks the bank account and if there is enough money then then player buy the attack and defence cards that are still available
     # attack_card(x,y,card name, if and elif ):
-    attack_card(57.5, 23.5, 0, 'buy')
-    attack_card(62.6, 23.5, 1, 'buy')
-    attack_card(67.7, 23.5, 2, 'buy')
-    attack_card(72.8, 23.5, 3, 'buy')
-    attack_card(77.9, 23.5, 4, 'buy')
-    attack_card(83, 23.5, 5, 'buy')
-    
-    attack_card(57.5, 36.7, 6, 'buy')
-    attack_card(62.6, 36.7, 7, 'buy')
-    attack_card(67.7, 36.7, 8, 'buy')
-    attack_card(72.8, 36.7, 9, 'buy')
-    attack_card(77.9, 36.7, 10, 'buy')
-    attack_card(83, 36.7, 11, 'buy')
+    attack_card(0.575, 0.235, 0, 'buy')
+    attack_card(0.626, 0.235, 1, 'buy')
+    attack_card(0.677, 0.235, 2, 'buy')
+    attack_card(0.728, 0.235, 3, 'buy')
+    attack_card(0.779, 0.235, 4, 'buy')
+    attack_card(0.83, 0.235, 5, 'buy')
 
+    attack_card(0.575, 0.367, 6, 'buy')
+    attack_card(0.626, 0.367, 7, 'buy')
+    attack_card(0.677, 0.367, 8, 'buy')
+    attack_card(0.728, 0.367, 9, 'buy')
+    attack_card(0.779, 0.367, 10, 'buy')
+    attack_card(0.83, 0.367, 11, 'buy')
 
-    attack_card(57.5, 49.9, 12, 'buy')
-    attack_card(62.6, 49.9, 13, 'buy')
-    attack_card(67.7, 49.9, 14, 'buy')
-    attack_card(72.8, 49.9, 15, 'buy')
-    attack_card(77.9, 49.9, 16, 'buy')
-    attack_card(83, 49.9, 17, 'buy')
+    attack_card(0.575, 0.499, 12, 'buy')
+    attack_card(0.626, 0.499, 13, 'buy')
+    attack_card(0.677, 0.499, 14, 'buy')
+    attack_card(0.728, 0.499, 15, 'buy')
+    attack_card(0.779, 0.499, 16, 'buy')
+    attack_card(0.83, 0.499, 17, 'buy')
 
-    attack_card(57.5, 63.1, 18, 'buy')
-    attack_card(62.6, 63.1, 19, 'buy')
-    attack_card(67.7, 63.1, 20, 'buy')
-    attack_card(72.8, 63.1, 21, 'buy')
-    attack_card(77.9, 63.1, 22, 'buy')
-    attack_card(83, 63.1, 23, 'buy')
+    attack_card(0.575, 0.631, 18, 'buy')
+    attack_card(0.626, 0.631, 19, 'buy')
+    attack_card(0.677, 0.631, 20, 'buy')
+    attack_card(0.728, 0.631, 21, 'buy')
+    attack_card(0.779, 0.631, 22, 'buy')
+    attack_card(0.83, 0.631, 23, 'buy')
 
     # removes attack and defence cards that player want to use by clicking on it
     #   power_card(x,y,card number,if and elif,player power card stack)
