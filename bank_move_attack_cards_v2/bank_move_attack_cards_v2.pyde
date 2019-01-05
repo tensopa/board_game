@@ -36,7 +36,7 @@ def add_money(x, y, w, h, r, t, f):
                     pass
                 else:
                     player = player_names[t]
-                    r = random.randint(1, 6)
+                    r = random.randint(2, 12)
                     bank[player] = bank[player] + r
                     turnOfPlayer = 0
 
@@ -149,26 +149,23 @@ def turn_button(x, y, w, h, r, t, f):
 
 
 
-
-
-
-
-
 # display test on the screen
 def text_display():
     fill(0, 0, 0)
-    p1 = 'player one: \n' + str(bank['player ONE']) + ' blobs'
-    p2 = 'player two: \n' + str(bank['player TWO']) + ' blobs'
-    p3 = 'player three: \n' + str(bank['player THREE']) + ' blobs'
-    p4 = 'player four: \n' + str(bank['player FOUR']) + ' blobs'
+    p1 = str(bank['player ONE']) + ' blobs'
+    p2 = str(bank['player TWO']) + ' blobs'
+    p3 = str(bank['player THREE']) + ' blobs'
+    p4 = str(bank['player FOUR']) + ' blobs'
+    
+    
     
     dice = 'Dice'
     cards = 'Cards'
     textSize(width * 0.01)
-    text(p1, width * 0.02, height* 0.19)
-    text(p2, width * 0.91, height * 0.19)
-    text(p3, width  * 0.02, height* 0.955)
-    text(p4, width * 0.91, height * 0.955)
+    text(p1, width * 0.035, height* 0.22)
+    text(p2, width * 0.925, height * 0.22)
+    text(p3, width  * 0.035, height* 0.98)
+    text(p4, width * 0.925, height * 0.98)
     
     textSize(width  * 0.02)
     text(dice, width * 0.48, height * 0.125)
@@ -364,6 +361,26 @@ def player_attack_card(x, y, k, f, p):
 
 
 
+def player_name(x, y, w, h, r, playerName,f):
+    if f == 'display':
+        if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
+            fill(0, 50, 100, 150)
+            rect((width*x), (height*y), (width * w), (height*h), r)
+        else:
+            fill(0, 90, 190, 150)
+            rect((width*x), (height*y), (width * w), (height*h), r)
+        # player names 
+        fill(255)
+        textFont(createFont("Arial", width*0.009, True))
+        text(playerName,width*(x+0.01), height*(y+0.02)) # text(name, x, y)
+        
+    elif f == 'keyPressed':
+        if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
+            if len(playerName) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535:
+                playerName += str(key)
+            else:
+                pass
+
 
 
 
@@ -371,11 +388,13 @@ def player_attack_card(x, y, k, f, p):
 
 def setup():
     frameRate(60)
-    #size(1500,900)
-    fullScreen()
+    size(1500,900)
+    #fullScreen()
     shuffle()
     
-    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold
+    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4
+    
+    Text1, Text2, Text3, Text4 = "", "", "", "" # Text input for each textbox
     
     move_left= loadImage("move_left.PNG")
     move_right= loadImage("move_right.PNG")
@@ -391,6 +410,10 @@ def setup():
     sold = loadImage("sold.png")
     
 def draw():
+    global Text1, Text2, Text3, Text4
+    
+    
+    
     # Background
     
     image(Background, 0, 0, width, height)
@@ -413,7 +436,14 @@ def draw():
     # rect(x, y, width, height, round)
     fill(250, 250, 250, 100)
     turn_button(0.005, 0.765, 0.10, 0.23, 20, 3, 'display')
+    
+    
 
+    player_name(0.015, 0.17, 0.08, 0.03, 10, Text1,'display')
+    player_name(0.015, 0.93, 0.08, 0.03, 10, Text2,'display')
+    player_name(0.905, 0.93, 0.08, 0.03, 10, Text3,'display')
+    player_name(0.905, 0.17, 0.08, 0.03, 10, Text4,'display')
+    
     # player turn display background rectangle
     # rect(x, y, width, height, round)
     if turnOfPlayer == 0:
@@ -445,7 +475,7 @@ def draw():
     Ship2 = loadImage("GreenShip.png")
     image(Ship2, (width * 0.907), (height* 0.015), (width * 0.075), (height * 0.15))
     Ship3 = loadImage("GreyShip.png")
-    image(Ship3, (width * 0.0155), (height* 0.78), (width * 0.075), (height  * 0.15))
+    image(Ship3, (width * 0.0155), (height* 0.78), (width * 0.075), (height  * 0.14))
     Ship4 = loadImage("RedShip.png")
     image(Ship4, (width * 0.882), (height* 0.78), (width * 0.13), (height  * 0.14))
 
@@ -545,7 +575,39 @@ def draw():
     if len(Player_four_attack_card) >= 6: player_attack_card(0.665, 0.765, 6, 'display', Player_four_attack_card)
     if len(Player_four_attack_card) >= 7: player_attack_card(0.629, 0.765, 7, 'display', Player_four_attack_card)
     
+def keyPressed():
+    global Text1, Text2, Text3, Text4
+    
 
+    if (mouseX > (width*0.015) and mouseY > (height*0.17) and (mouseX < ((width*0.015) + (width * 0.08)) and mouseY < ((height*0.17) + (height*0.03)))):
+            if len(Text1) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535 and key != BACKSPACE:
+                Text1 += str(key)
+            elif len(Text1)>0:
+                if key == BACKSPACE:
+                    Text1=Text1[:-1]
+                
+
+    elif (mouseX > (width*0.015) and mouseY > (height*0.93) and (mouseX < ((width*0.015) + (width * 0.08)) and mouseY < ((height*0.93) + (height*0.03)))):
+        if len(Text2) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535 and key != BACKSPACE:
+                Text2 += str(key)
+        elif len(Text2)>0:
+                if key == BACKSPACE:
+                    Text2=Text2[:-1]
+
+    elif (mouseX > (width*0.905) and mouseY > (height*0.93) and (mouseX < ((width*0.905) + (width * 0.08)) and mouseY < ((height*0.93) + (height*0.03)))):
+        if len(Text3) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535 and key != BACKSPACE:
+                Text3 += str(key)
+        elif len(Text3)>0:
+                if key == BACKSPACE:
+                    Text3=Text3[:-1]
+
+    elif (mouseX > (width*0.905) and mouseY > (height*0.17) and (mouseX < ((width*0.905) + (width * 0.08)) and mouseY < ((height*0.17) + (height*0.03)))):
+        if len(Text4) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535 and key != BACKSPACE:
+                Text4 += str(key)
+        elif len(Text4)>0:
+                if key == BACKSPACE:
+                    Text4=Text4[:-1]
+    
 def mousePressed():
     fill(250, 250, 250, 0)
 
