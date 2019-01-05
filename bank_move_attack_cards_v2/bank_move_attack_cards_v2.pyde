@@ -386,8 +386,8 @@ def player_name(x, y, w, h, r, playerName,f):
 
 def setup():
     frameRate(60)
-    size(1500,900)
-    #fullScreen()
+    #size(1500,900)
+    fullScreen()
     shuffle()
     
     global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4
