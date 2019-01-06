@@ -391,7 +391,7 @@ def setup():
     fullScreen()
     shuffle()
     
-    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6
+    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
     
     Text1, Text2, Text3, Text4 = "| ", "| ", "| ", "| " # Text input for each textbox
     
@@ -415,8 +415,13 @@ def setup():
     d5 = loadImage("5.png")
     d6 = loadImage("6.png")
     
+    
+    Ship1 = loadImage("BlueShip.png")
+    Ship2 = loadImage("GreenShip.png")
+    Ship3 = loadImage("GreyShip.png")
+    Ship4 = loadImage("RedShip.png")
 def draw():
-    global Text1, Text2, Text3, Text4, dice, d1, d2, d3, d4, d5, d6
+    global Text1, Text2, Text3, Text4, dice, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
     
     
     
@@ -487,13 +492,10 @@ def draw():
     text_display()
 
     # display ships on the screen
-    Ship1 = loadImage("BlueShip.png")
+
     image(Ship1, (width * 0.0155), (height* 0.015), (width * 0.075), (height * 0.15))
-    Ship2 = loadImage("GreenShip.png")
     image(Ship2, (width * 0.907), (height* 0.015), (width * 0.075), (height * 0.15))
-    Ship3 = loadImage("GreyShip.png")
     image(Ship3, (width * 0.0155), (height* 0.78), (width * 0.075), (height  * 0.14))
-    Ship4 = loadImage("RedShip.png")
     image(Ship4, (width * 0.882), (height* 0.78), (width * 0.13), (height  * 0.14))
 
     # displays movement cards on the screen by checking the player stack list
