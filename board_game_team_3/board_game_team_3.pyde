@@ -4,6 +4,8 @@ player_names = {1: 'player ONE', 2: 'player TWO', 3: 'player THREE', 4: 'player 
 bank = {'player ONE': 0, 'player TWO': 0, 'player THREE': 0, 'player FOUR': 0}
 turnOfPlayer = 0
 
+dice = 1
+
 Player_one_movement_card = []
 Player_one_attack_card = []
 Player_two_movement_card = []
@@ -20,6 +22,7 @@ powerUpDownCard_stack = ['mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.II'
 powerUpDownCard_price = {'mk.I': 10, 'mk.II': 15, 'shield': 15, 'blockade': 7, 'nuke': 35, 'used': 0}
 
 
+
 # adds money(blobs) to the bank account of the player
 def add_money(x, y, w, h, r, t, f):
     if f == 'display':
@@ -32,13 +35,16 @@ def add_money(x, y, w, h, r, t, f):
         if mouseButton == LEFT:
             if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
                 global turnOfPlayer
+                global dice
                 if turnOfPlayer == 0:
                     pass
                 else:
                     player = player_names[t]
-                    r = random.randint(2, 12)
-                    bank[player] = bank[player] + r
+                    dice = random.randint(1, 6)
+                    bank[player] = bank[player] + dice
                     turnOfPlayer = 0
+
+                                    
 
 
 
@@ -385,9 +391,9 @@ def setup():
     fullScreen()
     shuffle()
     
-    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4
+    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6
     
-    Text1, Text2, Text3, Text4 = "", "", "", "" # Text input for each textbox
+    Text1, Text2, Text3, Text4 = "| ", "| ", "| ", "| " # Text input for each textbox
     
     move_left= loadImage("move_left.PNG")
     move_right= loadImage("move_right.PNG")
@@ -402,8 +408,15 @@ def setup():
     nuke = loadImage("nuke.png")
     sold = loadImage("sold.png")
     
+    d1 = loadImage("1.png")
+    d2 = loadImage("2.png")
+    d3 = loadImage("3.png")
+    d4 = loadImage("4.png")
+    d5 = loadImage("5.png")
+    d6 = loadImage("6.png")
+    
 def draw():
-    global Text1, Text2, Text3, Text4
+    global Text1, Text2, Text3, Text4, dice, d1, d2, d3, d4, d5, d6
     
     
     
@@ -411,7 +424,18 @@ def draw():
     
     image(Background, 0, 0, width, height)
     
-
+    if dice == 1:
+        image(d1, width* 0.465, height* 0.2, width*0.07, height* 0.11)
+    if dice == 2:
+        image(d2, width* 0.465, height* 0.2, width*0.07, height* 0.11)
+    if dice == 3:
+        image(d3, width* 0.465, height* 0.2, width*0.07, height* 0.11)
+    if dice == 4:
+        image(d4, width* 0.465, height* 0.2, width*0.07, height* 0.11)
+    if dice == 5:
+        image(d5, width* 0.465, height* 0.2, width*0.07, height* 0.11)
+    if dice == 6:
+        image(d6, width* 0.465, height* 0.2, width*0.07, height* 0.11)
 
     # player one background rectangle
     # rect(x, y, width, height, round)
@@ -431,7 +455,7 @@ def draw():
     turn_button(0.005, 0.765, 0.10, 0.23, 20, 3, 'display')
     
     
-
+    # displays player name on the screen 
     player_name(0.015, 0.17, 0.08, 0.03, 10, Text1,'display')
     player_name(0.015, 0.93, 0.08, 0.03, 10, Text2,'display')
     player_name(0.905, 0.93, 0.08, 0.03, 10, Text3,'display')
@@ -571,7 +595,8 @@ def draw():
 def keyPressed():
     global Text1, Text2, Text3, Text4
     
-
+   # allow you to input player name on the screen by typing the name while you hover the mouse over one particular name box
+    
     if (mouseX > (width*0.015) and mouseY > (height*0.17) and (mouseX < ((width*0.015) + (width * 0.08)) and mouseY < ((height*0.17) + (height*0.03)))):
             if len(Text1) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535 and key != BACKSPACE:
                 Text1 += str(key)
