@@ -381,13 +381,13 @@ def player_name(x, y, w, h, r, playerName,f):
 
 def setup():
     frameRate(60)
-    #size(1500,900)
-    fullScreen()
+    size(1500,900)
+    #fullScreen()
     shuffle()
     
     global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4
     
-    Text1, Text2, Text3, Text4 = "", "", "", "" # Text input for each textbox
+    Text1, Text2, Text3, Text4 = "| ", "| ", "| ", "| " # Text input for each textbox
     
     move_left= loadImage("move_left.PNG")
     move_right= loadImage("move_right.PNG")
@@ -431,7 +431,7 @@ def draw():
     turn_button(0.005, 0.765, 0.10, 0.23, 20, 3, 'display')
     
     
-
+    # displays player name on the screen 
     player_name(0.015, 0.17, 0.08, 0.03, 10, Text1,'display')
     player_name(0.015, 0.93, 0.08, 0.03, 10, Text2,'display')
     player_name(0.905, 0.93, 0.08, 0.03, 10, Text3,'display')
@@ -571,7 +571,8 @@ def draw():
 def keyPressed():
     global Text1, Text2, Text3, Text4
     
-
+   # allow you to input player name on the screen by typing the name while you hover the mouse over one particular name box
+    
     if (mouseX > (width*0.015) and mouseY > (height*0.17) and (mouseX < ((width*0.015) + (width * 0.08)) and mouseY < ((height*0.17) + (height*0.03)))):
             if len(Text1) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535 and key != BACKSPACE:
                 Text1 += str(key)
