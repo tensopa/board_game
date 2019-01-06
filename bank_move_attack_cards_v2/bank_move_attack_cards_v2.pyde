@@ -372,12 +372,7 @@ def player_name(x, y, w, h, r, playerName,f):
         textFont(createFont("Arial", width*0.009, True))
         text(playerName,width*(x+0.01), height*(y+0.02)) # text(name, x, y)
         
-    elif f == 'keyPressed':
-        if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
-            if len(playerName) < 12 and key!= ENTER and keyCode != SHIFT and key != 65535:
-                playerName += str(key)
-            else:
-                pass
+
 
 
 
