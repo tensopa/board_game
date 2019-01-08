@@ -8,6 +8,8 @@ turnOfPlayer = 0
 dice1 = 1
 dice2 = 1
 
+page='attack_cards'
+
 Player_one_movement_card = []
 Player_one_attack_card = []
 Player_two_movement_card = []
@@ -18,10 +20,10 @@ Player_four_movement_card = []
 Player_four_attack_card = []
 neutral_movement_cards = ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l',
                           'l', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', ]
-powerUpDownCard_stack = ['mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.II', 'mk.II', 'mk.II', 'mk.II', 'mk.II',
+attackCards_stack = ['mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.II', 'mk.II', 'mk.II', 'mk.II', 'mk.II',
                          'shield', 'shield', 'shield', 'shield', 'shield', 'shield', 'nuke', 'blockade', 'blockade',
                          'blockade', 'blockade', 'blockade', 'blockade']
-powerUpDownCard_price = {'mk.I': 10, 'mk.II': 15, 'shield': 15, 'blockade': 7, 'nuke': 35, 'used': 0}
+attackCards_price = {'mk.I': 10, 'mk.II': 15, 'shield': 15, 'blockade': 7, 'nuke': 35, 'used': 0}
 
 
 # adds money(blobs) to the bank account of the player
@@ -126,12 +128,51 @@ def turn_button(x, y, w, h, r, t, f):
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
             fill(100, 100, 100, 150)
             rect((width*x), (height*y), (width * w), (height*h), r)
+            if turnOfPlayer == t:
+                strokeWeight(width*0.005)
+                stroke(204, 102, 0)
+                rect((width*x), (height*y), (width * w), (height*h), r)
+                stroke(0, 0, 0)
+                strokeWeight(0)
         else:
             rect((width*x), (height*y), (width * w), (height*h), r)
+            if turnOfPlayer == t:
+                strokeWeight(width*0.005)
+                stroke(204, 102, 0)
+                rect((width*x), (height*y), (width * w), (height*h), r)
+                stroke(0, 0, 0)
+                strokeWeight(0)
     elif f == 'play':
         if mouseButton == LEFT:
             if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
                 turnOfPlayer = t
+
+
+def page_button(x, y, w, h, r, p, f):
+    global page
+    if f == 'display':
+        if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
+            fill(100, 100, 100, 150)
+            rect((width*x), (height*y), (width * w), (height*h), r)
+            if page == p:
+                strokeWeight(width*0.002)
+                stroke(204, 102, 0)
+                rect((width*x), (height*y), (width * w), (height*h), r)
+                stroke(0, 0, 0)
+                strokeWeight(0)
+        else:
+            rect((width*x), (height*y), (width * w), (height*h), r)
+            if page == p:
+                strokeWeight(width*0.002)
+                stroke(204, 102, 0)
+                rect((width*x), (height*y), (width * w), (height*h), r)
+                stroke(0, 0, 0)
+                strokeWeight(0)
+    elif f == 'play':
+        if mouseButton == LEFT:
+            if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
+                page = p
+
 
 
 # display test on the screen
@@ -142,9 +183,11 @@ def text_display():
     p3 = str(bank['player THREE']) + ' blobs'
     p4 = str(bank['player FOUR']) + ' blobs'
     
-    
+    turn_wheel_page='Turn \nwheel'
+    attack_card_page='Attack \ncards'
     dice = 'Dice'
     cards = 'Cards'
+    
     textSize(width * 0.01)
     text(p1, width * 0.035, height* 0.22)
     text(p2, width * 0.925, height * 0.22)
@@ -153,7 +196,9 @@ def text_display():
     
     textSize(width  * 0.02)
     text(dice, width * 0.48, height * 0.125)
-    text(cards, width  * 0.475, height * 0.18)
+    text(cards, width  * 0.474, height * 0.18)
+    text(attack_card_page, width  * 0.4, height * 0.13)
+    text(turn_wheel_page, width  * 0.548, height * 0.13)
     
     textSize(width * 0.01)
     if turnOfPlayer == 0:
@@ -162,12 +207,12 @@ def text_display():
     else:
         turn = 'player ' + str(turnOfPlayer) + ' turn'
         text(turn, width * 0.465, height * 0.06)
-
-    # attack cards prise text
-    attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs '
-    fill(250, 250,250)
-    textSize(width * 0.01)
-    text(attack_cards_price, width  * 0.89, height * 0.46)
+    if page=='attack_cards':
+        # attack cards prise text
+        attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs '
+        fill(250, 250,250)
+        textSize(width * 0.01)
+        text(attack_cards_price, width  * 0.89, height * 0.46)
 
 
 # displays movement cards on the screen by checking the player stack list
@@ -213,83 +258,84 @@ def movement_card(x, y, p, k, f):
 # displays the attack and defence cards that are still available on the screen
 # attack_card(x,y,card name, if and elif ):
 def attack_card(x, y, k, f):
-    global turnOfPlayer
-    p = powerUpDownCard_stack[k]
-    if f == 'buy':
-        if mousePressed:
-            if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
-                if turnOfPlayer == 0:
-                    pass
-                else:
-                    player = player_names[turnOfPlayer]
-                    price = -powerUpDownCard_price[p]
-                    if bank[player] + price < 0:
-                        turnOfPlayer = 0
+    if page=='attack_cards':
+        global turnOfPlayer
+        p = attackCards_stack[k]
+        if f == 'buy':
+            if mousePressed:
+                if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
+                    if turnOfPlayer == 0:
+                        pass
                     else:
-                        if powerUpDownCard_stack[k]=='used':
+                        player = player_names[turnOfPlayer]
+                        price = -attackCards_price[p]
+                        if bank[player] + price < 0:
                             turnOfPlayer = 0
                         else:
-                            bank[player] = bank[player] + price
-                            if turnOfPlayer == 1:
-                                Player_one_attack_card.append(powerUpDownCard_stack[k])
+                            if attackCards_stack[k]=='used':
                                 turnOfPlayer = 0
-                                powerUpDownCard_stack[k] = 'used'
-                            elif turnOfPlayer == 2:
-                                Player_two_attack_card.append(powerUpDownCard_stack[k])
-                                turnOfPlayer = 0
-                                powerUpDownCard_stack[k] = 'used'
-                            elif turnOfPlayer == 3:
-                                Player_three_attack_card.append(powerUpDownCard_stack[k])
-                                turnOfPlayer = 0
-                                powerUpDownCard_stack[k] = 'used'
-                            elif turnOfPlayer == 4:
-                                Player_four_attack_card.append(powerUpDownCard_stack[k])
-                                turnOfPlayer = 0
-                                powerUpDownCard_stack[k] = 'used'
-    elif f == 'display':            
-        if powerUpDownCard_stack[k] == 'mk.I':
-            image(mk_I_laser, (width* x), (height* y), (width* 0.05), (height* 0.13))
-    
-        elif powerUpDownCard_stack[k] == 'mk.II':
-            image(mk_II_laser, (width* x), (height* y), (width* 0.05), (height* 0.13))
-    
-        elif powerUpDownCard_stack[k] == 'shield':
-            image(shield, (width* x), (height* y), (width* 0.05), (height* 0.13))
-    
-        elif powerUpDownCard_stack[k] == 'blockade':
-            image(blockade, (width* x), (height* y), (width* 0.05), (height* 0.13))
-    
-        elif powerUpDownCard_stack[k] == 'nuke':
-            image(nuke, (width* x), (height* y), (width* 0.05), (height* 0.13))
-    
-        elif powerUpDownCard_stack[k] == 'used':
-            image(sold, (width* x), (height* y), (width* 0.05), (height* 0.13))
+                            else:
+                                bank[player] = bank[player] + price
+                                if turnOfPlayer == 1:
+                                    Player_one_attack_card.append(attackCards_stack[k])
+                                    turnOfPlayer = 0
+                                    attackCards_stack[k] = 'used'
+                                elif turnOfPlayer == 2:
+                                    Player_two_attack_card.append(attackCards_stack[k])
+                                    turnOfPlayer = 0
+                                    attackCards_stack[k] = 'used'
+                                elif turnOfPlayer == 3:
+                                    Player_three_attack_card.append(attackCards_stack[k])
+                                    turnOfPlayer = 0
+                                    attackCards_stack[k] = 'used'
+                                elif turnOfPlayer == 4:
+                                    Player_four_attack_card.append(attackCards_stack[k])
+                                    turnOfPlayer = 0
+                                    attackCards_stack[k] = 'used'
+        elif f == 'display':            
+            if attackCards_stack[k] == 'mk.I':
+                image(mk_I_laser, (width* x), (height* y), (width* 0.07), (height* 0.17))
         
+            elif attackCards_stack[k] == 'mk.II':
+                image(mk_II_laser, (width* x), (height* y), (width* 0.07), (height* 0.17))
         
-        if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
+            elif attackCards_stack[k] == 'shield':
+                image(shield, (width* x), (height* y), (width* 0.07), (height* 0.17))
         
-            if powerUpDownCard_stack[k] == 'mk.I':
-                image(mk_I_laser, width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
+            elif attackCards_stack[k] == 'blockade':
+                image(blockade, (width* x), (height* y), (width* 0.07), (height* 0.17))
         
-            elif powerUpDownCard_stack[k] == 'mk.II':
-                image(mk_II_laser,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
+            elif attackCards_stack[k] == 'nuke':
+                image(nuke, (width* x), (height* y), (width* 0.07), (height* 0.17))
         
-            elif powerUpDownCard_stack[k] == 'shield':
-                image(shield,  width* (x -0.0025), height* (y -0.0025), width*(0.05+0.005), height* (0.13+0.005))
-        
-            elif powerUpDownCard_stack[k] == 'blockade':
-                image(blockade,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
-        
-            elif powerUpDownCard_stack[k] == 'nuke':
-                image(nuke,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))
-        
-            elif powerUpDownCard_stack[k] == 'used':
-                image(sold,  width* (x-0.0025), height* (y-0.0025), width*(0.05+0.005), height* (0.13+0.005))    
+            elif attackCards_stack[k] == 'used':
+                image(sold, (width* x), (height* y), (width* 0.07), (height* 0.17))
+            
+            
+            if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
+            
+                if attackCards_stack[k] == 'mk.I':
+                    image(mk_I_laser, width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+            
+                elif attackCards_stack[k] == 'mk.II':
+                    image(mk_II_laser,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+            
+                elif attackCards_stack[k] == 'shield':
+                    image(shield,  width* (x -0.0025), height* (y -0.0025), width*(0.07+0.005), height* (0.17+0.005))
+            
+                elif attackCards_stack[k] == 'blockade':
+                    image(blockade,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+            
+                elif attackCards_stack[k] == 'nuke':
+                    image(nuke,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+            
+                elif attackCards_stack[k] == 'used':
+                    image(sold,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))    
 
 
 # displays the attack and defence cards owned by the player on the screen next to the player spaceship
 # removes attack and defence cards that player want to use by clicking on it
-#   power_card(x,y,card number,if and elif,player power card stack)
+#   player_card(x,y,card number,if and elif,player power card stack)
 def player_attack_card(x, y, k, f, p):
     if f == 'use':
         if mousePressed:
@@ -362,20 +408,26 @@ def draw():
     # Background
     image(Background, 0, 0, width, height)
     
-    # Display image with corresponding dice number
-    if dice1 == 1: image(d1, width* 0.5, height* 0.2, width*0.07, height* 0.11)
-    if dice1 == 2: image(d2, width* 0.5, height* 0.2, width*0.07, height* 0.11)
-    if dice1 == 3: image(d3, width* 0.5, height* 0.2, width*0.07, height* 0.11)
-    if dice1 == 4: image(d4, width* 0.5, height* 0.2, width*0.07, height* 0.11)
-    if dice1 == 5: image(d5, width* 0.5, height* 0.2, width*0.07, height* 0.11)
-    if dice1 == 6: image(d6, width* 0.5, height* 0.2, width*0.07, height* 0.11)
+    # display page buttons
+    fill(250, 250, 250, 100)
+    page_button(0.39, 0.094, 0.07, 0.1, 20, 'attack_cards', 'display')
+    page_button(0.54, 0.094, 0.07, 0.1, 20, 'turn_wheel', 'display')
     
-    if dice2 == 1: image(d1, width* 0.42, height* 0.2, width*0.07, height* 0.11)
-    if dice2 == 2: image(d2, width* 0.42, height* 0.2, width*0.07, height* 0.11)
-    if dice2 == 3: image(d3, width* 0.42, height* 0.2, width*0.07, height* 0.11)
-    if dice2 == 4: image(d4, width* 0.42, height* 0.2, width*0.07, height* 0.11)
-    if dice2 == 5: image(d5, width* 0.42, height* 0.2, width*0.07, height* 0.11)
-    if dice2 == 6: image(d6, width* 0.42, height* 0.2, width*0.07, height* 0.11)
+    
+    # Display image with corresponding dice number
+    if dice1 == 1: image(d1, width* 0.5, height* 0.86, width*0.07, height* 0.11)
+    if dice1 == 2: image(d2, width* 0.5, height* 0.86, width*0.07, height* 0.11)
+    if dice1 == 3: image(d3, width* 0.5, height* 0.86, width*0.07, height* 0.11)
+    if dice1 == 4: image(d4, width* 0.5, height* 0.86, width*0.07, height* 0.11)
+    if dice1 == 5: image(d5, width* 0.5, height* 0.86, width*0.07, height* 0.11)
+    if dice1 == 6: image(d6, width* 0.5, height* 0.86, width*0.07, height* 0.11)
+    
+    if dice2 == 1: image(d1, width* 0.42, height* 0.86, width*0.07, height* 0.11)
+    if dice2 == 2: image(d2, width* 0.42, height* 0.86, width*0.07, height* 0.11)
+    if dice2 == 3: image(d3, width* 0.42, height* 0.86, width*0.07, height* 0.11)
+    if dice2 == 4: image(d4, width* 0.42, height* 0.86, width*0.07, height* 0.11)
+    if dice2 == 5: image(d5, width* 0.42, height* 0.86, width*0.07, height* 0.11)
+    if dice2 == 6: image(d6, width* 0.42, height* 0.86, width*0.07, height* 0.11)
 
     # player one background rectangle
     # rect(x, y, width, height, round)
@@ -411,11 +463,11 @@ def draw():
     # dice background rectangle
     # rect(x, y, width, height, round)
     fill(250, 250, 250, 100)
-    add_money(0.45, 0.09, 0.10, 0.05, 20, turnOfPlayer, 'display')
+    add_money(0.465, 0.09, 0.07, 0.05, 20, turnOfPlayer, 'display')
     
     # display button to hand out movement card 
     fill(250, 250, 250, 100)
-    hand_out_movement_card(0.45, 0.145,0.10, 0.05, 20, turnOfPlayer, 'display')
+    hand_out_movement_card(0.465, 0.145,0.07, 0.05, 20, turnOfPlayer, 'display')
     
     # display player (blobs) amount and turn/dice test on the screen
     text_display()
@@ -456,36 +508,40 @@ def draw():
 
     # displays the attack and defence cards that are still available on the screen
     # attack_card(x,y,card name, if and elif ):
-    attack_card(0.575, 0.235, 0, 'display')
-    attack_card(0.626, 0.235, 1, 'display')
-    attack_card(0.677, 0.235, 2, 'display')
-    attack_card(0.728, 0.235, 3, 'display')
-    attack_card(0.779, 0.235, 4, 'display')
-    attack_card(0.83, 0.235, 5, 'display')
+    attack_card(0.203, 0.631, 20, 'display')
+    attack_card(0.278, 0.631, 23, 'display')
+    attack_card(0.353, 0.631, 0, 'display')
+    attack_card(0.428, 0.631, 1, 'display')
+    attack_card(0.503, 0.631, 2, 'display')
+    attack_card(0.578, 0.631, 3, 'display')
+    attack_card(0.653, 0.631, 4, 'display')
+    attack_card(0.728, 0.631, 5, 'display')
+    
+    attack_card(0.203, 0.279, 18, 'display')
+    attack_card(0.278, 0.279, 21, 'display')
+    attack_card(0.353, 0.279, 6, 'display')
+    attack_card(0.428, 0.279, 7, 'display')
+    attack_card(0.503, 0.279, 8, 'display')
+    attack_card(0.578, 0.279, 9, 'display')
+    attack_card(0.653, 0.279, 10, 'display')
+    attack_card(0.728, 0.279, 11, 'display')
+    
+    attack_card(0.203, 0.455, 19, 'display')
+    attack_card(0.278, 0.455, 22, 'display')
+    attack_card(0.353, 0.455, 12, 'display')
+    attack_card(0.428, 0.455, 13, 'display')
+    attack_card(0.503, 0.455, 14, 'display')
+    attack_card(0.578, 0.455, 15, 'display')
+    attack_card(0.653, 0.455, 16, 'display')
+    attack_card(0.728, 0.455, 17, 'display')
 
-    attack_card(0.575, 0.367, 6, 'display')
-    attack_card(0.626, 0.367, 7, 'display')
-    attack_card(0.677, 0.367, 8, 'display')
-    attack_card(0.728, 0.367, 9, 'display')
-    attack_card(0.779, 0.367, 10, 'display')
-    attack_card(0.83, 0.367, 11, 'display')
 
-    attack_card(0.575, 0.499, 12, 'display')
-    attack_card(0.626, 0.499, 13, 'display')
-    attack_card(0.677, 0.499, 14, 'display')
-    attack_card(0.728, 0.499, 15, 'display')
-    attack_card(0.779, 0.499, 16, 'display')
-    attack_card(0.83, 0.499, 17, 'display')
-
-    attack_card(0.575, 0.631, 18, 'display')
-    attack_card(0.626, 0.631, 19, 'display')
-    attack_card(0.677, 0.631, 20, 'display')
-    attack_card(0.728, 0.631, 21, 'display')
-    attack_card(0.779, 0.631, 22, 'display')
-    attack_card(0.83, 0.631, 23, 'display')
+    
+    
+    
 
     # displays the attack and defence cards owned by the player on the screen next to the player spaceship
-    #   power_card(x,y,card number,if and elif,player power card stack)
+    #   player_attack_card(x,y,card number,if and elif,player power card stack)
     if len(Player_one_attack_card) >= 1: player_attack_card(0.12, 0.15, 1, 'display', Player_one_attack_card)
     if len(Player_one_attack_card) >= 2: player_attack_card(0.156, 0.15, 2, 'display', Player_one_attack_card)
     if len(Player_one_attack_card) >= 3: player_attack_card(0.192, 0.15, 3, 'display', Player_one_attack_card)
@@ -567,6 +623,11 @@ def mousePressed():
     turn_button(0.895, 0.005, 0.10, 0.23, 20, 2, 'play')  # player two
     turn_button(0.895, 0.765, 0.10, 0.23, 20, 4, 'play') # player four
     turn_button(0.005, 0.765, 0.10, 0.23, 20, 3, 'play') # player three
+    
+    # changes the page with mouse click
+    page_button(0.39, 0.094, 0.07, 0.1, 20, 'attack_cards', 'play')
+    page_button(0.54, 0.094, 0.07, 0.1, 20, 'turn_wheel', 'play')
+
 
     # movement card will be removed by clicking on it and one new movement card from the neutral stack will be added to player stack
     # player one
@@ -597,33 +658,32 @@ def mousePressed():
 
     # checks the bank account and if there is enough money then then player buy the attack and defence cards that are still available
     # attack_card(x,y,card name, if and elif ):
-    attack_card(0.575, 0.235, 0, 'buy')
-    attack_card(0.626, 0.235, 1, 'buy')
-    attack_card(0.677, 0.235, 2, 'buy')
-    attack_card(0.728, 0.235, 3, 'buy')
-    attack_card(0.779, 0.235, 4, 'buy')
-    attack_card(0.83, 0.235, 5, 'buy')
-
-    attack_card(0.575, 0.367, 6, 'buy')
-    attack_card(0.626, 0.367, 7, 'buy')
-    attack_card(0.677, 0.367, 8, 'buy')
-    attack_card(0.728, 0.367, 9, 'buy')
-    attack_card(0.779, 0.367, 10, 'buy')
-    attack_card(0.83, 0.367, 11, 'buy')
-
-    attack_card(0.575, 0.499, 12, 'buy')
-    attack_card(0.626, 0.499, 13, 'buy')
-    attack_card(0.677, 0.499, 14, 'buy')
-    attack_card(0.728, 0.499, 15, 'buy')
-    attack_card(0.779, 0.499, 16, 'buy')
-    attack_card(0.83, 0.499, 17, 'buy')
-
-    attack_card(0.575, 0.631, 18, 'buy')
-    attack_card(0.626, 0.631, 19, 'buy')
-    attack_card(0.677, 0.631, 20, 'buy')
-    attack_card(0.728, 0.631, 21, 'buy')
-    attack_card(0.779, 0.631, 22, 'buy')
-    attack_card(0.83, 0.631, 23, 'buy')
+    attack_card(0.203, 0.631, 20, 'buy')
+    attack_card(0.278, 0.631, 23, 'buy')
+    attack_card(0.353, 0.631, 0, 'buy')
+    attack_card(0.428, 0.631, 1, 'buy')
+    attack_card(0.503, 0.631, 2, 'buy')
+    attack_card(0.578, 0.631, 3, 'buy')
+    attack_card(0.653, 0.631, 4, 'buy')
+    attack_card(0.728, 0.631, 5, 'buy')
+    
+    attack_card(0.203, 0.279, 18, 'buy')
+    attack_card(0.278, 0.279, 21, 'buy')
+    attack_card(0.353, 0.279, 6, 'buy')
+    attack_card(0.428, 0.279, 7, 'buy')
+    attack_card(0.503, 0.279, 8, 'buy')
+    attack_card(0.578, 0.279, 9, 'buy')
+    attack_card(0.653, 0.279, 10, 'buy')
+    attack_card(0.728, 0.279, 11, 'buy')
+    
+    attack_card(0.203, 0.455, 19, 'buy')
+    attack_card(0.278, 0.455, 22, 'buy')
+    attack_card(0.353, 0.455, 12, 'buy')
+    attack_card(0.428, 0.455, 13, 'buy')
+    attack_card(0.503, 0.455, 14, 'buy')
+    attack_card(0.578, 0.455, 15, 'buy')
+    attack_card(0.653, 0.455, 16, 'buy')
+    attack_card(0.728, 0.455, 17, 'buy')
 
     # removes attack and defence cards that player want to use by clicking on it
     #   power_card(x,y,card number,if and elif,player power card stack)
