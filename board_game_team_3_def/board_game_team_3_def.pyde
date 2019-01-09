@@ -12,6 +12,8 @@ blinkTime = millis()
 blinkOn = True
 blinkLine = '' 
 
+explanation_text='Welcome :)'
+
 page='attack_cards'
 
 Player_one_movement_card = []
@@ -47,6 +49,7 @@ def blinkCursor():
 
 # adds money(blobs) to the bank account of the player
 def add_money(x, y, w, h, r, t, f):
+    global explanation_text
     if f == 'display':
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
             fill(100, 100, 100, 100)
@@ -66,6 +69,7 @@ def add_money(x, y, w, h, r, t, f):
                     dice2 = random.randint(1, 6)
                     bank[player] = bank[player] + dice1 + dice2
                     turnOfPlayer = 0
+                    explanation_text="(:------:)\n(:------:)"
 
 
 # shuffles the cards stack and deals 5 movement card per player
@@ -91,6 +95,7 @@ def movement_cards(k, p):
 
 
 def hand_out_movement_card(x, y, w, h, r, t, f):
+    global explanation_text
     if f == 'display':
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
             fill(100, 100, 100, 100)
@@ -103,36 +108,48 @@ def hand_out_movement_card(x, y, w, h, r, t, f):
             if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
                 global turnOfPlayer
                 if turnOfPlayer == 0:
-                    pass
+                    explanation_text="You have to choose player turn by clicking \non the player spaceship to take that action"
                 if turnOfPlayer == 1:
                     if len(Player_one_movement_card)==5:
+                        explanation_text="you can only have 5 cards at a time"
+                        turnOfPlayer = 0
                         pass
                     else:
                         Player_one_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]
                         turnOfPlayer = 0
+                        explanation_text="(:------:)\n(:------:)"
                         
                 if turnOfPlayer == 2:
                     if len(Player_two_movement_card)==5:
+                        explanation_text="you can only have 5 cards at a time"
+                        turnOfPlayer = 0
                         pass
                     else:
                         Player_two_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]    
-                        turnOfPlayer = 0        
+                        turnOfPlayer = 0      
+                        explanation_text="(:------:)\n(:------:)"  
                 if turnOfPlayer == 3:
                     if len(Player_three_movement_card)==5:
+                        explanation_text="you can only have 5 cards at a time"
+                        turnOfPlayer = 0
                         pass
                     else:
                         Player_three_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]   
-                        turnOfPlayer = 0               
+                        turnOfPlayer = 0  
+                        explanation_text="(:------:)\n(:------:)"             
                 if turnOfPlayer == 4:
                     if len(Player_four_movement_card)==5:
+                        explanation_text="you can only have 5 cards at a time"
+                        turnOfPlayer = 0
                         pass
                     else:
                         Player_four_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]
                         turnOfPlayer = 0
+                        explanation_text="(:------:)\n(:------:)"
 
 
 # rectangle with (x, y, width, height, radius) in percentages
@@ -198,6 +215,7 @@ def page_button(x, y, w, h, r, p, f):
 
 # display test on the screen
 def text_display():
+    global explanation_text
     fill(0, 0, 0)
     p1 = str(bank['player ONE']) + ' blobs'
     p2 = str(bank['player TWO']) + ' blobs'
@@ -222,12 +240,14 @@ def text_display():
     text(turn_wheel_page, width  * 0.548, height * 0.13)
     
     textSize(width * 0.01)
+    textAlign(CENTER, CENTER)
     if turnOfPlayer == 0:
-        turn = 'Please choose the player turn by clicking \n on the player spaceship'
-        text(turn, width * 0.402, height  * 0.047)
+        turn = explanation_text
+        text(turn, width * 0.502, height  * 0.055)
     else:
         turn = 'Player ' + str(turnOfPlayer) + ' turn'
-        text(turn, width * 0.47, height * 0.06)
+        text(turn, width * 0.50, height * 0.055)
+    textAlign(LEFT)
     if page=='attack_cards':
         # attack cards prise text
         attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs '
@@ -280,21 +300,25 @@ def movement_card(x, y, p, k, f):
 # attack_card(x,y,card name, if and elif ):
 def attack_card(x, y, k, f):
     if page=='attack_cards':
-        global turnOfPlayer
+        global turnOfPlayer, explanation_text
         p = attackCards_stack[k]
         if f == 'buy':
             if mousePressed:
-                if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
+                if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.09)) and mouseY < ((height*y) + height* 0.19))):
                     if turnOfPlayer == 0:
+                        explanation_text='You have to choose player turn by clicking \non the player spaceship to take that action'
                         pass
                     else:
                         player = player_names[turnOfPlayer]
                         price = -attackCards_price[p]
                         if bank[player] + price < 0:
+                            explanation_text="you don't have enough blobs to buy this card. \nPrices of the cards are on the right"
                             turnOfPlayer = 0
                         else:
+                            explanation_text="(:------:)\n(:------:)"
                             if attackCards_stack[k]=='used':
                                 turnOfPlayer = 0
+                                explanation_text="This card is no longer  available \nSorry :("                                 
                             else:
                                 bank[player] = bank[player] + price
                                 if turnOfPlayer == 1:
@@ -313,45 +337,48 @@ def attack_card(x, y, k, f):
                                     Player_four_attack_card.append(attackCards_stack[k])
                                     turnOfPlayer = 0
                                     attackCards_stack[k] = 'used'
-        elif f == 'display':            
+                                    
+        elif f == 'display':   
+        
+
             if attackCards_stack[k] == 'mk.I':
-                image(mk_I_laser, (width* x), (height* y), (width* 0.07), (height* 0.17))
+                image(mk_I_laser, (width* x), (height* y), (width* 0.09), (height* 0.19))
         
             elif attackCards_stack[k] == 'mk.II':
-                image(mk_II_laser, (width* x), (height* y), (width* 0.07), (height* 0.17))
+                image(mk_II_laser, (width* x), (height* y), (width* 0.09), (height* 0.19))
         
             elif attackCards_stack[k] == 'shield':
-                image(shield, (width* x), (height* y), (width* 0.07), (height* 0.17))
+                image(shield, (width* x), (height* y), (width* 0.09), (height* 0.19))
         
             elif attackCards_stack[k] == 'blockade':
-                image(blockade, (width* x), (height* y), (width* 0.07), (height* 0.17))
+                image(blockade, (width* x), (height* y), (width* 0.09), (height* 0.19))
         
             elif attackCards_stack[k] == 'nuke':
-                image(nuke, (width* x), (height* y), (width* 0.07), (height* 0.17))
+                image(nuke, (width* x), (height* y), (width* 0.09), (height* 0.19))
         
             elif attackCards_stack[k] == 'used':
-                image(sold, (width* x), (height* y), (width* 0.07), (height* 0.17))
+                image(sold, (width* x), (height* y), (width* 0.09), (height* 0.19))
             
             
-            if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.05)) and mouseY < ((height*y) + height* 0.13))):
+            if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * 0.09)) and mouseY < ((height*y) + height* 0.19))):
             
                 if attackCards_stack[k] == 'mk.I':
-                    image(mk_I_laser, width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+                    image(mk_I_laser, width* (x-0.0025), height* (y-0.0025), width*(0.09+0.005), height* (0.19+0.005))
             
                 elif attackCards_stack[k] == 'mk.II':
-                    image(mk_II_laser,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+                    image(mk_II_laser,  width* (x-0.0025), height* (y-0.0025), width*(0.09+0.005), height* (0.19+0.005))
             
                 elif attackCards_stack[k] == 'shield':
-                    image(shield,  width* (x -0.0025), height* (y -0.0025), width*(0.07+0.005), height* (0.17+0.005))
+                    image(shield,  width* (x -0.0025), height* (y -0.0025), width*(0.09+0.005), height* (0.19+0.005))
             
                 elif attackCards_stack[k] == 'blockade':
-                    image(blockade,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+                    image(blockade,  width* (x-0.0025), height* (y-0.0025), width*(0.09+0.005), height* (0.19+0.005))
             
                 elif attackCards_stack[k] == 'nuke':
-                    image(nuke,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))
+                    image(nuke,  width* (x-0.0025), height* (y-0.0025), width*(0.09+0.005), height* (0.19+0.005))
             
                 elif attackCards_stack[k] == 'used':
-                    image(sold,  width* (x-0.0025), height* (y-0.0025), width*(0.07+0.005), height* (0.17+0.005))    
+                    image(sold,  width* (x-0.0025), height* (y-0.0025), width*(0.09+0.005), height* (0.19+0.005))    
 
 
 # displays the attack and defence cards owned by the player on the screen next to the player spaceship
@@ -393,8 +420,8 @@ def player_name(x, y, w, h, r, playerName,f):
 
 def setup():
     frameRate(60)
-    #size(1500,900)
-    fullScreen()
+    size(1500,900)
+    #fullScreen()
     shuffle()
     
     global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
@@ -509,58 +536,59 @@ def draw():
     # movement_card_play(x,y,player stack list name,list item number,fuctionName)
     # player one
     # movement_card_play(x,y,player stack list name,list item number,if and elif)
-    if len(Player_one_movement_card) >= 1:movement_card(0.12, 0.015, Player_one_movement_card, 0, 'display')
-    if len(Player_one_movement_card) >= 2:movement_card(0.17, 0.015, Player_one_movement_card, 1, 'display')
-    if len(Player_one_movement_card) >= 3:movement_card(0.22, 0.015, Player_one_movement_card, 2, 'display')
-    if len(Player_one_movement_card) >= 4:movement_card(0.27, 0.015, Player_one_movement_card, 3, 'display')
-    if len(Player_one_movement_card) >= 5:movement_card(0.32, 0.015, Player_one_movement_card, 4, 'display')
+    if len(Player_one_movement_card) >= 1:movement_card(0.12, 0.005, Player_one_movement_card, 0, 'display')
+    if len(Player_one_movement_card) >= 2:movement_card(0.17, 0.005, Player_one_movement_card, 1, 'display')
+    if len(Player_one_movement_card) >= 3:movement_card(0.22, 0.005, Player_one_movement_card, 2, 'display')
+    if len(Player_one_movement_card) >= 4:movement_card(0.27, 0.005, Player_one_movement_card, 3, 'display')
+    if len(Player_one_movement_card) >= 5:movement_card(0.32, 0.005, Player_one_movement_card, 4, 'display')
     # player two
-    if len(Player_two_movement_card) >= 1:movement_card(0.83, 0.015, Player_two_movement_card, 0, 'display')
-    if len(Player_two_movement_card) >= 2:movement_card(0.78, 0.015, Player_two_movement_card, 1, 'display')
-    if len(Player_two_movement_card) >= 3:movement_card(0.73, 0.015, Player_two_movement_card, 2, 'display')
-    if len(Player_two_movement_card) >= 4:movement_card(0.68, 0.015, Player_two_movement_card, 3, 'display')
-    if len(Player_two_movement_card) >= 5:movement_card(0.63, 0.015, Player_two_movement_card, 4, 'display')
+    if len(Player_two_movement_card) >= 1:movement_card(0.83, 0.005, Player_two_movement_card, 0, 'display')
+    if len(Player_two_movement_card) >= 2:movement_card(0.78, 0.005, Player_two_movement_card, 1, 'display')
+    if len(Player_two_movement_card) >= 3:movement_card(0.73, 0.005, Player_two_movement_card, 2, 'display')
+    if len(Player_two_movement_card) >= 4:movement_card(0.68, 0.005, Player_two_movement_card, 3, 'display')
+    if len(Player_two_movement_card) >= 5:movement_card(0.63, 0.005, Player_two_movement_card, 4, 'display')
     # player three
-    if len(Player_three_movement_card) >= 1:movement_card(0.12, 0.85, Player_three_movement_card, 0, 'display')
-    if len(Player_three_movement_card) >= 2:movement_card(0.17, 0.85, Player_three_movement_card, 1, 'display')
-    if len(Player_three_movement_card) >= 3:movement_card(0.22, 0.85, Player_three_movement_card, 2, 'display')
-    if len(Player_three_movement_card) >= 4:movement_card(0.27, 0.85, Player_three_movement_card, 3, 'display')
-    if len(Player_three_movement_card) >= 5:movement_card(0.32, 0.85, Player_three_movement_card, 4, 'display')
+    if len(Player_three_movement_card) >= 1:movement_card(0.12, 0.868, Player_three_movement_card, 0, 'display')
+    if len(Player_three_movement_card) >= 2:movement_card(0.17, 0.868, Player_three_movement_card, 1, 'display')
+    if len(Player_three_movement_card) >= 3:movement_card(0.22, 0.868, Player_three_movement_card, 2, 'display')
+    if len(Player_three_movement_card) >= 4:movement_card(0.27, 0.868, Player_three_movement_card, 3, 'display')
+    if len(Player_three_movement_card) >= 5:movement_card(0.32, 0.868, Player_three_movement_card, 4, 'display')
     # player four
-    if len(Player_four_movement_card) >= 1:movement_card(0.83, 0.85, Player_four_movement_card, 0, 'display')
-    if len(Player_four_movement_card) >= 2:movement_card(0.78, 0.85, Player_four_movement_card, 1, 'display')
-    if len(Player_four_movement_card) >= 3:movement_card(0.73, 0.85, Player_four_movement_card, 2, 'display')
-    if len(Player_four_movement_card) >= 4:movement_card(0.68, 0.85, Player_four_movement_card, 3, 'display')
-    if len(Player_four_movement_card) >= 5:movement_card(0.63, 0.85, Player_four_movement_card, 4, 'display')
+    if len(Player_four_movement_card) >= 1:movement_card(0.83, 0.868, Player_four_movement_card, 0, 'display')
+    if len(Player_four_movement_card) >= 2:movement_card(0.78, 0.868, Player_four_movement_card, 1, 'display')
+    if len(Player_four_movement_card) >= 3:movement_card(0.73, 0.868, Player_four_movement_card, 2, 'display')
+    if len(Player_four_movement_card) >= 4:movement_card(0.68, 0.868, Player_four_movement_card, 3, 'display')
+    if len(Player_four_movement_card) >= 5:movement_card(0.63, 0.868, Player_four_movement_card, 4, 'display')
 
     # displays the attack and defence cards that are still available on the screen
     # attack_card(x,y,card name, if and elif ):
-    attack_card(0.203, 0.631, 20, 'display')
-    attack_card(0.278, 0.631, 23, 'display')
-    attack_card(0.353, 0.631, 0, 'display')
-    attack_card(0.428, 0.631, 1, 'display')
-    attack_card(0.503, 0.631, 2, 'display')
-    attack_card(0.578, 0.631, 3, 'display')
-    attack_card(0.653, 0.631, 4, 'display')
-    attack_card(0.728, 0.631, 5, 'display')
+        
+    attack_card(0.133, 0.209, 18, 'display')
+    attack_card(0.226, 0.209, 21, 'display')
+    attack_card(0.319, 0.209, 6, 'display')
+    attack_card(0.412, 0.209, 7, 'display')
+    attack_card(0.505, 0.209, 8, 'display')
+    attack_card(0.598, 0.209, 9, 'display')
+    attack_card(0.691, 0.209, 10, 'display')
+    attack_card(0.784, 0.209, 11, 'display')
     
-    attack_card(0.203, 0.279, 18, 'display')
-    attack_card(0.278, 0.279, 21, 'display')
-    attack_card(0.353, 0.279, 6, 'display')
-    attack_card(0.428, 0.279, 7, 'display')
-    attack_card(0.503, 0.279, 8, 'display')
-    attack_card(0.578, 0.279, 9, 'display')
-    attack_card(0.653, 0.279, 10, 'display')
-    attack_card(0.728, 0.279, 11, 'display')
+    attack_card(0.133, 0.405, 19, 'display')
+    attack_card(0.226, 0.405, 22, 'display')
+    attack_card(0.319, 0.405, 12, 'display')
+    attack_card(0.412, 0.405, 13, 'display')
+    attack_card(0.505, 0.405, 14, 'display')
+    attack_card(0.598, 0.405, 15, 'display')
+    attack_card(0.691, 0.405, 16, 'display')
+    attack_card(0.784, 0.405, 17, 'display')
     
-    attack_card(0.203, 0.455, 19, 'display')
-    attack_card(0.278, 0.455, 22, 'display')
-    attack_card(0.353, 0.455, 12, 'display')
-    attack_card(0.428, 0.455, 13, 'display')
-    attack_card(0.503, 0.455, 14, 'display')
-    attack_card(0.578, 0.455, 15, 'display')
-    attack_card(0.653, 0.455, 16, 'display')
-    attack_card(0.728, 0.455, 17, 'display')
+    attack_card(0.133, 0.601, 20, 'display')
+    attack_card(0.226, 0.601, 23, 'display')
+    attack_card(0.319, 0.601, 0, 'display')
+    attack_card(0.412, 0.601, 1, 'display')
+    attack_card(0.505, 0.601, 2, 'display')
+    attack_card(0.598, 0.601, 3, 'display')
+    attack_card(0.691, 0.601, 4, 'display')
+    attack_card(0.784, 0.601, 5, 'display')
 
 
     
@@ -569,37 +597,54 @@ def draw():
 
     # displays the attack and defence cards owned by the player on the screen next to the player spaceship
     #   player_attack_card(x,y,card number,if and elif,player power card stack)
-    if len(Player_one_attack_card) >= 1: player_attack_card(0.12, 0.15, 1, 'display', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 2: player_attack_card(0.156, 0.15, 2, 'display', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 3: player_attack_card(0.192, 0.15, 3, 'display', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 4: player_attack_card(0.228, 0.15, 4, 'display', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 5: player_attack_card(0.264, 0.15, 5, 'display', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 6: player_attack_card(0.3, 0.15, 6, 'display', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 7: player_attack_card(0.336, 0.15, 7, 'display', Player_one_attack_card)
-
-    if len(Player_two_attack_card) >= 1: player_attack_card(0.845, 0.15, 1, 'display', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 2: player_attack_card(0.809, 0.15, 2, 'display', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 3: player_attack_card(0.773, 0.15, 3, 'display', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 4: player_attack_card(0.737, 0.15, 4, 'display', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 5: player_attack_card(0.701, 0.15, 5, 'display', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 6: player_attack_card(0.669, 0.15, 6, 'display', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 7: player_attack_card(0.629, 0.15, 7, 'display', Player_two_attack_card)
-
-    if len(Player_three_attack_card) >= 1: player_attack_card(0.12, 0.765, 1, 'display', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 2: player_attack_card(0.156, 0.765, 2, 'display', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 3: player_attack_card(0.192, 0.765, 3, 'display', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 4: player_attack_card(0.228, 0.765, 4, 'display', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 5: player_attack_card(0.264, 0.765, 5, 'display', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 6: player_attack_card(0.30, 0.765, 6, 'display', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 7: player_attack_card(0.336, 0.765, 7, 'display', Player_three_attack_card)
-
-    if len(Player_four_attack_card) >= 1: player_attack_card(0.845, 0.765, 1, 'display', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 2: player_attack_card(0.809, 0.765, 2, 'display', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 3: player_attack_card(0.773, 0.765, 3, 'display', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 4: player_attack_card(0.737, 0.765, 4, 'display', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 5: player_attack_card(0.701, 0.765, 5, 'display', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 6: player_attack_card(0.665, 0.765, 6, 'display', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 7: player_attack_card(0.629, 0.765, 7, 'display', Player_four_attack_card)
+    # player 1
+    if len(Player_one_attack_card) >= 1: player_attack_card(0.005, 0.24, 1, 'display', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 2: player_attack_card(0.041, 0.24, 2, 'display', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 3: player_attack_card(0.077, 0.24, 3, 'display', Player_one_attack_card)
+    
+    if len(Player_one_attack_card) >= 4: player_attack_card(0.005, 0.322, 4, 'display', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 5: player_attack_card(0.041, 0.322, 5, 'display', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 6: player_attack_card(0.077, 0.322, 6, 'display', Player_one_attack_card)
+    
+    if len(Player_one_attack_card) >= 7: player_attack_card(0.005, 0.404, 7, 'display', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 8: player_attack_card(0.041, 0.404, 8, 'display', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 9: player_attack_card(0.077, 0.404, 9, 'display', Player_one_attack_card)
+    # player 2
+    if len(Player_two_attack_card) >= 1: player_attack_card(0.960, 0.24, 1, 'display', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 2: player_attack_card(0.924, 0.24, 2, 'display', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 3: player_attack_card(0.888, 0.24, 3, 'display', Player_two_attack_card)
+    
+    if len(Player_two_attack_card) >= 4: player_attack_card(0.960, 0.322, 4, 'display', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 5: player_attack_card(0.924, 0.322, 5, 'display', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 6: player_attack_card(0.888, 0.322, 6, 'display', Player_two_attack_card)
+    
+    if len(Player_two_attack_card) >= 7: player_attack_card(0.960, 0.404, 7, 'display', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 8: player_attack_card(0.924, 0.404, 8, 'display', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 9: player_attack_card(0.888, 0.404, 9, 'display', Player_two_attack_card)
+    # player 3
+    if len(Player_three_attack_card) >= 1: player_attack_card(0.005, 0.680, 1, 'display', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 2: player_attack_card(0.041, 0.680, 2, 'display', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 3: player_attack_card(0.077, 0.680, 3, 'display', Player_three_attack_card)
+    
+    if len(Player_three_attack_card) >= 4: player_attack_card(0.005, 0.598, 4, 'display', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 5: player_attack_card(0.041, 0.598, 5, 'display', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 6: player_attack_card(0.077, 0.598, 6, 'display', Player_three_attack_card)
+    
+    if len(Player_three_attack_card) >= 7: player_attack_card(0.005, 0.516, 7, 'display', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 8: player_attack_card(0.041, 0.516, 8, 'display', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 9: player_attack_card(0.077, 0.516, 9, 'display', Player_three_attack_card)
+    # player 4
+    if len(Player_four_attack_card) >= 1: player_attack_card(0.960, 0.680, 1, 'display', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 2: player_attack_card(0.924, 0.680, 2, 'display', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 3: player_attack_card(0.888, 0.680, 3, 'display', Player_four_attack_card)
+    
+    if len(Player_four_attack_card) >= 4: player_attack_card(0.960, 0.598, 4, 'display', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 5: player_attack_card(0.924, 0.598, 5, 'display', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 6: player_attack_card(0.888, 0.598, 6, 'display', Player_four_attack_card)
+    
+    if len(Player_four_attack_card) >= 7: player_attack_card(0.960, 0.516, 7, 'display', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 8: player_attack_card(0.924, 0.516, 8, 'display', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 9: player_attack_card(0.888, 0.516, 9, 'display', Player_four_attack_card)
     
 def keyPressed():
     global Text1, Text2, Text3, Text4
@@ -659,90 +704,106 @@ def mousePressed():
     # movement card will be removed by clicking on it and one new movement card from the neutral stack will be added to player stack
     # player one
     # movement_card_play(x,y,player stack list name,list item number,if and elif)
-    if len(Player_one_movement_card) >= 1:movement_card(0.12, 0.015, Player_one_movement_card, 0, 'play')
-    if len(Player_one_movement_card) >= 2:movement_card(0.17, 0.015, Player_one_movement_card, 1, 'play')
-    if len(Player_one_movement_card) >= 3:movement_card(0.22, 0.015, Player_one_movement_card, 2, 'play')
-    if len(Player_one_movement_card) >= 4:movement_card(0.27, 0.015, Player_one_movement_card, 3, 'play')
-    if len(Player_one_movement_card) >= 5:movement_card(0.32, 0.015, Player_one_movement_card, 4, 'play')
+    if len(Player_one_movement_card) >= 1:movement_card(0.12, 0.005, Player_one_movement_card, 0, 'play')
+    if len(Player_one_movement_card) >= 2:movement_card(0.17, 0.005, Player_one_movement_card, 1, 'play')
+    if len(Player_one_movement_card) >= 3:movement_card(0.22, 0.005, Player_one_movement_card, 2, 'play')
+    if len(Player_one_movement_card) >= 4:movement_card(0.27, 0.005, Player_one_movement_card, 3, 'play')
+    if len(Player_one_movement_card) >= 5:movement_card(0.32, 0.005, Player_one_movement_card, 4, 'play')
     # player two
-    if len(Player_two_movement_card) >= 1:movement_card(0.83, 0.015, Player_two_movement_card, 0, 'play')
-    if len(Player_two_movement_card) >= 2:movement_card(0.78, 0.015, Player_two_movement_card, 1, 'play')
-    if len(Player_two_movement_card) >= 3:movement_card(0.73, 0.015, Player_two_movement_card, 2, 'play')
-    if len(Player_two_movement_card) >= 4:movement_card(0.68, 0.015, Player_two_movement_card, 3, 'play')
-    if len(Player_two_movement_card) >= 5:movement_card(0.63, 0.015, Player_two_movement_card, 4, 'play')
+    if len(Player_two_movement_card) >= 1:movement_card(0.83, 0.005, Player_two_movement_card, 0, 'play')
+    if len(Player_two_movement_card) >= 2:movement_card(0.78, 0.005, Player_two_movement_card, 1, 'play')
+    if len(Player_two_movement_card) >= 3:movement_card(0.73, 0.005, Player_two_movement_card, 2, 'play')
+    if len(Player_two_movement_card) >= 4:movement_card(0.68, 0.005, Player_two_movement_card, 3, 'play')
+    if len(Player_two_movement_card) >= 5:movement_card(0.63, 0.005, Player_two_movement_card, 4, 'play')
     # player three
-    if len(Player_three_movement_card) >= 1:movement_card(0.12, 0.85, Player_three_movement_card, 0, 'play')
-    if len(Player_three_movement_card) >= 2:movement_card(0.17, 0.85, Player_three_movement_card, 1, 'play')
-    if len(Player_three_movement_card) >= 3:movement_card(0.22, 0.85, Player_three_movement_card, 2, 'play')
-    if len(Player_three_movement_card) >= 4:movement_card(0.27, 0.85, Player_three_movement_card, 3, 'play')
-    if len(Player_three_movement_card) >= 5:movement_card(0.32, 0.85, Player_three_movement_card, 4, 'play')
+    if len(Player_three_movement_card) >= 1:movement_card(0.12, 0.868, Player_three_movement_card, 0, 'play')
+    if len(Player_three_movement_card) >= 2:movement_card(0.17, 0.868, Player_three_movement_card, 1, 'play')
+    if len(Player_three_movement_card) >= 3:movement_card(0.22, 0.868, Player_three_movement_card, 2, 'play')
+    if len(Player_three_movement_card) >= 4:movement_card(0.27, 0.868, Player_three_movement_card, 3, 'play')
+    if len(Player_three_movement_card) >= 5:movement_card(0.32, 0.868, Player_three_movement_card, 4, 'play')
     # player four
-    if len(Player_four_movement_card) >= 1:movement_card(0.83, 0.85, Player_four_movement_card, 0, 'play')
-    if len(Player_four_movement_card) >= 2:movement_card(0.78, 0.85, Player_four_movement_card, 1, 'play')
-    if len(Player_four_movement_card) >= 3:movement_card(0.73, 0.85, Player_four_movement_card, 2, 'play')
-    if len(Player_four_movement_card) >= 4:movement_card(0.68, 0.85, Player_four_movement_card, 3, 'play')
-    if len(Player_four_movement_card) >= 5:movement_card(0.63, 0.85, Player_four_movement_card, 4, 'play')
+    if len(Player_four_movement_card) >= 1:movement_card(0.83, 0.868, Player_four_movement_card, 0, 'play')
+    if len(Player_four_movement_card) >= 2:movement_card(0.78, 0.868, Player_four_movement_card, 1, 'play')
+    if len(Player_four_movement_card) >= 3:movement_card(0.73, 0.868, Player_four_movement_card, 2, 'play')
+    if len(Player_four_movement_card) >= 4:movement_card(0.68, 0.868, Player_four_movement_card, 3, 'play')
+    if len(Player_four_movement_card) >= 5:movement_card(0.63, 0.868, Player_four_movement_card, 4, 'play')
 
     # checks the bank account and if there is enough money then then player buy the attack and defence cards that are still available
     # attack_card(x,y,card name, if and elif ):
-    attack_card(0.203, 0.631, 20, 'buy')
-    attack_card(0.278, 0.631, 23, 'buy')
-    attack_card(0.353, 0.631, 0, 'buy')
-    attack_card(0.428, 0.631, 1, 'buy')
-    attack_card(0.503, 0.631, 2, 'buy')
-    attack_card(0.578, 0.631, 3, 'buy')
-    attack_card(0.653, 0.631, 4, 'buy')
-    attack_card(0.728, 0.631, 5, 'buy')
+    attack_card(0.133, 0.209, 18, 'buy')
+    attack_card(0.226, 0.209, 21, 'buy')
+    attack_card(0.319, 0.209, 6, 'buy')
+    attack_card(0.412, 0.209, 7, 'buy')
+    attack_card(0.505, 0.209, 8, 'buy')
+    attack_card(0.598, 0.209, 9, 'buy')
+    attack_card(0.691, 0.209, 10, 'buy')
+    attack_card(0.784, 0.209, 11, 'buy')
     
-    attack_card(0.203, 0.279, 18, 'buy')
-    attack_card(0.278, 0.279, 21, 'buy')
-    attack_card(0.353, 0.279, 6, 'buy')
-    attack_card(0.428, 0.279, 7, 'buy')
-    attack_card(0.503, 0.279, 8, 'buy')
-    attack_card(0.578, 0.279, 9, 'buy')
-    attack_card(0.653, 0.279, 10, 'buy')
-    attack_card(0.728, 0.279, 11, 'buy')
+    attack_card(0.133, 0.405, 19, 'buy')
+    attack_card(0.226, 0.405, 22, 'buy')
+    attack_card(0.319, 0.405, 12, 'buy')
+    attack_card(0.412, 0.405, 13, 'buy')
+    attack_card(0.505, 0.405, 14, 'buy')
+    attack_card(0.598, 0.405, 15, 'buy')
+    attack_card(0.691, 0.405, 16, 'buy')
+    attack_card(0.784, 0.405, 17, 'buy')
     
-    attack_card(0.203, 0.455, 19, 'buy')
-    attack_card(0.278, 0.455, 22, 'buy')
-    attack_card(0.353, 0.455, 12, 'buy')
-    attack_card(0.428, 0.455, 13, 'buy')
-    attack_card(0.503, 0.455, 14, 'buy')
-    attack_card(0.578, 0.455, 15, 'buy')
-    attack_card(0.653, 0.455, 16, 'buy')
-    attack_card(0.728, 0.455, 17, 'buy')
+    attack_card(0.133, 0.601, 20, 'buy')
+    attack_card(0.226, 0.601, 23, 'buy')
+    attack_card(0.319, 0.601, 0, 'buy')
+    attack_card(0.412, 0.601, 1, 'buy')
+    attack_card(0.505, 0.601, 2, 'buy')
+    attack_card(0.598, 0.601, 3, 'buy')
+    attack_card(0.691, 0.601, 4, 'buy')
+    attack_card(0.784, 0.601, 5, 'buy')
 
     # removes attack and defence cards that player want to use by clicking on it
     #   power_card(x,y,card number,if and elif,player power card stack)
-    if len(Player_one_attack_card) >= 1: player_attack_card(0.12, 0.15, 1, 'use', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 2: player_attack_card(0.156, 0.15, 2, 'use', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 3: player_attack_card(0.192, 0.15, 3, 'use', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 4: player_attack_card(0.228, 0.15, 4, 'use', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 5: player_attack_card(0.264, 0.15, 5, 'use', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 6: player_attack_card(0.3, 0.15, 6, 'use', Player_one_attack_card)
-    if len(Player_one_attack_card) >= 7: player_attack_card(0.336, 0.15, 7, 'use', Player_one_attack_card)
-
-    if len(Player_two_attack_card) >= 1: player_attack_card(0.845, 0.15, 1, 'use', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 2: player_attack_card(0.809, 0.15, 2, 'use', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 3: player_attack_card(0.773, 0.15, 3, 'use', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 4: player_attack_card(0.737, 0.15, 4, 'use', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 5: player_attack_card(0.701, 0.15, 5, 'use', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 6: player_attack_card(0.669, 0.15, 6, 'use', Player_two_attack_card)
-    if len(Player_two_attack_card) >= 7: player_attack_card(0.629, 0.15, 7, 'use', Player_two_attack_card)
-
-    if len(Player_three_attack_card) >= 1: player_attack_card(0.12, 0.765, 1, 'use', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 2: player_attack_card(0.156, 0.765, 2, 'use', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 3: player_attack_card(0.192, 0.765, 3, 'use', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 4: player_attack_card(0.228, 0.765, 4, 'use', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 5: player_attack_card(0.264, 0.765, 5, 'use', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 6: player_attack_card(0.30, 0.765, 6, 'use', Player_three_attack_card)
-    if len(Player_three_attack_card) >= 7: player_attack_card(0.336, 0.765, 7, 'use', Player_three_attack_card)
-
-    if len(Player_four_attack_card) >= 1: player_attack_card(0.845, 0.765, 1, 'use', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 2: player_attack_card(0.809, 0.765, 2, 'use', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 3: player_attack_card(0.773, 0.765, 3, 'use', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 4: player_attack_card(0.737, 0.765, 4, 'use', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 5: player_attack_card(0.701, 0.765, 5, 'use', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 6: player_attack_card(0.665, 0.765, 6, 'use', Player_four_attack_card)
-    if len(Player_four_attack_card) >= 7: player_attack_card(0.629, 0.765, 7, 'use', Player_four_attack_card)
+    if len(Player_one_attack_card) >= 1: player_attack_card(0.005, 0.24, 1, 'use', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 2: player_attack_card(0.041, 0.24, 2, 'use', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 3: player_attack_card(0.077, 0.24, 3, 'use', Player_one_attack_card)
+    
+    if len(Player_one_attack_card) >= 4: player_attack_card(0.005, 0.322, 4, 'use', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 5: player_attack_card(0.041, 0.322, 5, 'use', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 6: player_attack_card(0.077, 0.322, 6, 'use', Player_one_attack_card)
+    
+    if len(Player_one_attack_card) >= 7: player_attack_card(0.005, 0.404, 7, 'use', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 8: player_attack_card(0.041, 0.404, 8, 'use', Player_one_attack_card)
+    if len(Player_one_attack_card) >= 9: player_attack_card(0.077, 0.404, 9, 'use', Player_one_attack_card)
+    # player 2
+    if len(Player_two_attack_card) >= 1: player_attack_card(0.960, 0.24, 1, 'use', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 2: player_attack_card(0.924, 0.24, 2, 'use', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 3: player_attack_card(0.888, 0.24, 3, 'use', Player_two_attack_card)
+    
+    if len(Player_two_attack_card) >= 4: player_attack_card(0.960, 0.322, 4, 'use', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 5: player_attack_card(0.924, 0.322, 5, 'use', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 6: player_attack_card(0.888, 0.322, 6, 'use', Player_two_attack_card)
+    
+    if len(Player_two_attack_card) >= 7: player_attack_card(0.960, 0.404, 7, 'use', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 8: player_attack_card(0.924, 0.404, 8, 'use', Player_two_attack_card)
+    if len(Player_two_attack_card) >= 9: player_attack_card(0.888, 0.404, 9, 'use', Player_two_attack_card)
+    # player 3
+    if len(Player_three_attack_card) >= 1: player_attack_card(0.005, 0.680, 1, 'use', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 2: player_attack_card(0.041, 0.680, 2, 'use', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 3: player_attack_card(0.077, 0.680, 3, 'use', Player_three_attack_card)
+    
+    if len(Player_three_attack_card) >= 4: player_attack_card(0.005, 0.598, 4, 'use', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 5: player_attack_card(0.041, 0.598, 5, 'use', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 6: player_attack_card(0.077, 0.598, 6, 'use', Player_three_attack_card)
+    
+    if len(Player_three_attack_card) >= 7: player_attack_card(0.005, 0.516, 7, 'use', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 8: player_attack_card(0.041, 0.516, 8, 'use', Player_three_attack_card)
+    if len(Player_three_attack_card) >= 9: player_attack_card(0.077, 0.516, 9, 'use', Player_three_attack_card)
+    # player 4
+    if len(Player_four_attack_card) >= 1: player_attack_card(0.960, 0.680, 1, 'use', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 2: player_attack_card(0.924, 0.680, 2, 'use', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 3: player_attack_card(0.888, 0.680, 3, 'use', Player_four_attack_card)
+    
+    if len(Player_four_attack_card) >= 4: player_attack_card(0.960, 0.598, 4, 'use', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 5: player_attack_card(0.924, 0.598, 5, 'use', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 6: player_attack_card(0.888, 0.598, 6, 'use', Player_four_attack_card)
+    
+    if len(Player_four_attack_card) >= 7: player_attack_card(0.960, 0.516, 7, 'use', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 8: player_attack_card(0.924, 0.516, 8, 'use', Player_four_attack_card)
+    if len(Player_four_attack_card) >= 9: player_attack_card(0.888, 0.516, 9, 'use', Player_four_attack_card)
     
