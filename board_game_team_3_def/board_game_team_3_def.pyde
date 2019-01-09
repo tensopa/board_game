@@ -69,7 +69,7 @@ def add_money(x, y, w, h, r, t, f):
                     dice2 = random.randint(1, 6)
                     bank[player] = bank[player] + dice1 + dice2
                     turnOfPlayer = 0
-                    explanation_text="(:------:)\n(:------:)"
+                    explanation_text="(:------:)"
 
 
 # shuffles the cards stack and deals 5 movement card per player
@@ -118,7 +118,7 @@ def hand_out_movement_card(x, y, w, h, r, t, f):
                         Player_one_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]
                         turnOfPlayer = 0
-                        explanation_text="(:------:)\n(:------:)"
+                        explanation_text="(:------:)"
                         
                 if turnOfPlayer == 2:
                     if len(Player_two_movement_card)==5:
@@ -129,7 +129,7 @@ def hand_out_movement_card(x, y, w, h, r, t, f):
                         Player_two_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]    
                         turnOfPlayer = 0      
-                        explanation_text="(:------:)\n(:------:)"  
+                        explanation_text="(:------:)"
                 if turnOfPlayer == 3:
                     if len(Player_three_movement_card)==5:
                         explanation_text="you can only have 5 cards at a time"
@@ -139,7 +139,7 @@ def hand_out_movement_card(x, y, w, h, r, t, f):
                         Player_three_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]   
                         turnOfPlayer = 0  
-                        explanation_text="(:------:)\n(:------:)"             
+                        explanation_text="(:------:)"            
                 if turnOfPlayer == 4:
                     if len(Player_four_movement_card)==5:
                         explanation_text="you can only have 5 cards at a time"
@@ -149,7 +149,7 @@ def hand_out_movement_card(x, y, w, h, r, t, f):
                         Player_four_movement_card.append(neutral_movement_cards[0])
                         del neutral_movement_cards[0]
                         turnOfPlayer = 0
-                        explanation_text="(:------:)\n(:------:)"
+                        explanation_text="(:------:)"
 
 
 # rectangle with (x, y, width, height, radius) in percentages
@@ -315,7 +315,7 @@ def attack_card(x, y, k, f):
                             explanation_text="you don't have enough blobs to buy this card. \nPrices of the cards are on the right"
                             turnOfPlayer = 0
                         else:
-                            explanation_text="(:------:)\n(:------:)"
+                            explanation_text="(:------:)"
                             if attackCards_stack[k]=='used':
                                 turnOfPlayer = 0
                                 explanation_text="This card is no longer  available \nSorry :("                                 
@@ -420,8 +420,8 @@ def player_name(x, y, w, h, r, playerName,f):
 
 def setup():
     frameRate(60)
-    size(1500,900)
-    #fullScreen()
+    #size(1500,900)
+    fullScreen()
     shuffle()
     
     global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
