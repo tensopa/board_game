@@ -76,6 +76,7 @@ def hand_out_movement_card(x, y, w, h, r, t, f):
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
             fill(100, 100, 100, 100)
             rect((width* x), (height* y), (width* w), (height* h), r)
+            
         else:
             rect((width* x), (height* y), (width* w), (height* h), r)
     elif f == 'play':
@@ -154,6 +155,7 @@ def page_button(x, y, w, h, r, p, f):
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
             fill(100, 100, 100, 150)
             rect((width*x), (height*y), (width * w), (height*h), r)
+            fill(250, 250, 250, 100)
             if page == p:
                 strokeWeight(width*0.002)
                 stroke(204, 102, 0)
@@ -205,8 +207,8 @@ def text_display():
         turn = 'Please choose the player turn by clicking \n on the player spaceship'
         text(turn, width * 0.402, height  * 0.047)
     else:
-        turn = 'player ' + str(turnOfPlayer) + ' turn'
-        text(turn, width * 0.465, height * 0.06)
+        turn = 'Player ' + str(turnOfPlayer) + ' turn'
+        text(turn, width * 0.47, height * 0.06)
     if page=='attack_cards':
         # attack cards prise text
         attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs '
