@@ -8,6 +8,10 @@ turnOfPlayer = 0
 dice1 = 1
 dice2 = 1
 
+blinkTime = millis()
+blinkOn = True
+blinkLine = '' 
+
 page='attack_cards'
 
 Player_one_movement_card = []
@@ -24,6 +28,21 @@ attackCards_stack = ['mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.II', 'm
                          'shield', 'shield', 'shield', 'shield', 'shield', 'shield', 'nuke', 'blockade', 'blockade',
                          'blockade', 'blockade', 'blockade', 'blockade']
 attackCards_price = {'mk.I': 10, 'mk.II': 15, 'shield': 15, 'blockade': 7, 'nuke': 35, 'used': 0}
+
+
+def blinkCursor():
+    global blinkOn, blinkTime, blinkLine
+    if blinkOn:
+        fill(0,0,0)
+        blinkLine = "|"
+        noFill()
+    else:
+        blinkLine = ""
+        
+    
+    if (millis() - 250 > blinkTime):
+        blinkTime = millis()
+        blinkOn = not blinkOn
 
 
 # adds money(blobs) to the bank account of the player
@@ -360,6 +379,9 @@ def player_name(x, y, w, h, r, playerName,f):
         if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
             fill(10, 10, 10, 150)
             rect((width*x), (height*y), (width * w), (height*h), r)
+            fill(255)
+            textFont(createFont("Arial", width*0.01, True))
+            text(playerName+blinkLine,width*(x+0.01), height*(y+0.02)) # text(name, x, y)
         else:
             fill(50, 50, 50, 150)
             rect((width*x), (height*y), (width * w), (height*h), r)
@@ -371,13 +393,13 @@ def player_name(x, y, w, h, r, playerName,f):
 
 def setup():
     frameRate(60)
-    size(1500,900)
-    #fullScreen()
+    #size(1500,900)
+    fullScreen()
     shuffle()
     
     global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
     
-    Text1, Text2, Text3, Text4 = "| ", "| ", "| ", "| " # Text input for each textbox
+    Text1, Text2, Text3, Text4 = "", "", "", "" # Text input for each textbox
     
     move_left= loadImage("move_left.PNG")
     move_right= loadImage("move_right.PNG")
@@ -409,6 +431,9 @@ def draw():
     
     # Background
     image(Background, 0, 0, width, height)
+    
+    # binking cursor
+    blinkCursor()
     
     # display page buttons
     fill(250, 250, 250, 100)
