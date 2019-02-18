@@ -1,5 +1,6 @@
-#git is working, for real now!!. 
+
 import random
+
 
 player_names = {1: 'player ONE', 2: 'player TWO', 3: 'player THREE', 4: 'player FOUR'}
 bank = {'player ONE': 0, 'player TWO': 0, 'player THREE': 0, 'player FOUR': 0}
@@ -25,11 +26,20 @@ Player_three_attack_card = []
 Player_four_movement_card = []
 Player_four_attack_card = []
 neutral_movement_cards = ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l',
-                          'l', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', ]
+                          'l', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f']
 attackCards_stack = ['mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.I', 'mk.II', 'mk.II', 'mk.II', 'mk.II', 'mk.II',
                          'shield', 'shield', 'shield', 'shield', 'shield', 'shield', 'nuke', 'blockade', 'blockade',
                          'blockade', 'blockade', 'blockade', 'blockade']
 attackCards_price = {'mk.I': 10, 'mk.II': 15, 'shield': 15, 'blockade': 7, 'nuke': 35, 'used': 0}
+
+deg = 0
+speed = 0
+is_slowing = False
+rotation_speed = 0
+rotation = 0
+
+pointer = None
+wheel = None
 
 
 def blinkCursor():
@@ -211,7 +221,46 @@ def page_button(x, y, w, h, r, p, f):
             if (mouseX > (width*x) and mouseY > (height*y) and (mouseX < ((width*x) + (width * w)) and mouseY < ((height*y) + (height*h)))):
                 page = p
 
-
+def wheel_of_power():
+    if page=='turn_wheel':
+        global pointer, wheel, rotation_speed, rotate_counter, is_slowing, rotation
+        # Check if the wheel is slowing down, if so, decrease the rotation 
+        if is_slowing:
+            rotation_speed -= 0.1
+        else:
+            rotation_speed += deg
+        
+        if rotation_speed >= 25:
+            is_slowing = True
+            
+        if rotation_speed < 0:
+            rotation_speed = 0
+            rot = (rotation - 90) % 360
+            
+        rotation += rotation_speed
+        
+        # Push, pop keep transforms seperated from the rest of the function
+        pushMatrix()
+        # Draw the wheel and the pointer
+        image(pointer, width*0.5 - pointer.width*0.5, height*0.5 - pointer.height*0.5)
+        translate(width*0.5, height*0.5)
+        rotateZ(radians(rotation))
+        image(wheel, -wheel.width*0.5, -wheel.height*0.5)
+        popMatrix()
+        
+        # Draw the button and the colour change when hovering over it
+        # and the text
+        fill(250, 250, 250, 100)
+        rect(width*0.45, height*0.775, width*0.1, height*0.06, 20)
+        if (mouseX > (width*0.45) and mouseY > (height*0.775) and (mouseX < ((width*0.45) + (width * 0.1)) and mouseY < ((height*0.775) + (height*0.06)))):
+            fill(100, 100, 100,150)
+            rect(width*0.45, height*0.775, width*0.1, height*0.06, 20)
+        textAlign(CENTER, CENTER)
+        fill(0)
+        textSize(20)
+        text('Test your luck!', width*0.45, height*0.775, width*0.1, height*0.06)
+        textAlign(LEFT)
+   
 
 # display test on the screen
 def text_display():
@@ -248,13 +297,12 @@ def text_display():
         turn = 'Player ' + str(turnOfPlayer) + ' turn'
         text(turn, width * 0.50, height * 0.055)
     textAlign(LEFT)
-    if page=='attack_cards':
-        # attack cards prise text
-        attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs '
-        fill(250, 250,250)
-        textSize(width * 0.01)
-        text(attack_cards_price, width  * 0.89, height * 0.46)
-
+    # attack cards prise text
+    attack_cards_price = ' CARDS PRICE \n Mk.I:       10 Blobs \n Mk.II:      15 Blobs \n Shield:    15 Blobs \n Nuke:      35 Blobs \n Blockade: 7 blobs \n Turn Wheel: 6 Blobs'
+    fill(250, 250,250)
+    textSize(width * 0.01)
+    text(attack_cards_price, width  * 0.89, height * 0.43)
+    
 
 # displays movement cards on the screen by checking the player stack list
 # movement_card_play(x,y,player stack list name,list item number)
@@ -419,13 +467,13 @@ def player_name(x, y, w, h, r, playerName,f):
 
 
 def setup():
-    frameRate(60)
-    #size(1500,900)
-    fullScreen()
+    #P3D for the 3rd dimension so that the wheel can spin on RotateZ
+    #size(1900, 900,P3D)
+    fullScreen(P3D)
+    
     shuffle()
     
-    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
-    
+    global move_left, move_right, move_forward, Background, mk_I_laser, mk_II_laser, shield, blockade, nuke, sold, Text1, Text2, Text3, Text4, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4, pointer, wheel
     Text1, Text2, Text3, Text4 = "", "", "", "" # Text input for each textbox
     
     move_left= loadImage("move_left.PNG")
@@ -453,14 +501,23 @@ def setup():
     Ship3 = loadImage("GreyShip.png")
     Ship4 = loadImage("RedShip.png")
     
+
+    pointer = loadImage("pointer.png")
+    wheel = loadImage("wheel.png")
+    
 def draw():
-    global Text1, Text2, Text3, Text4, dice1, dice2, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4
+    global Text1, Text2, Text3, Text4, dice1, dice2, d1, d2, d3, d4, d5, d6, Ship1, Ship2, Ship3, Ship4, pointer, wheel, rotation_speed, rotate_counter, is_slowing, rotation, deg
     
     # Background
     image(Background, 0, 0, width, height)
     
-    # binking cursor
+    #Wheel
+    wheel_of_power()
+    
+    #binking cursor
     blinkCursor()
+    
+   
     
     # display page buttons
     fill(250, 250, 250, 100)
@@ -679,7 +736,33 @@ def keyPressed():
                     Text4=Text4[:-1]
     
 def mousePressed():
+    
+    #Wheel spin button with the requirements to use the wheel, the ammount of points u need etc.
     fill(250, 250, 250, 0)
+    global deg, is_slowing, rotation, randin, randin2, randin_usage, deg, turnOfPlayer, explanation_text
+    if (mouseX > (width*0.45) and mouseY > (height*0.775) and (mouseX < ((width*0.45) + (width * 0.1)) and mouseY < ((height*0.775) + (height*0.06)))):
+        if turnOfPlayer == 0:
+            explanation_text='You have to choose player turn by clicking \non the player spaceship to take that action'
+            pass
+        else:
+            player = player_names[turnOfPlayer]
+            price = -6
+            if bank[player] + price < 0:
+                explanation_text="you don't have enough blobs to spin the wheel. \nPrices of the wheel are on the right"
+                turnOfPlayer = 0
+            else:
+                explanation_text="(:------:)"                            
+                bank[player] = bank[player] + price
+                is_slowing = False
+                rotation = 0
+                randin = int(random.randint(1, 6))
+                randin2 = int(random.randint(1, 95))
+                randin_usage = randin * 90 + randin2
+                #The rotation of the wheel
+                deg = (randin_usage / 420.0)
+        
+        
+        
 
     # dice background rectangle button
     # rect(x, y, width, height, round,functionName)
@@ -700,7 +783,8 @@ def mousePressed():
     page_button(0.39, 0.094, 0.07, 0.1, 20, 'attack_cards', 'play')
     page_button(0.54, 0.094, 0.07, 0.1, 20, 'turn_wheel', 'play')
 
-
+    
+    
     # movement card will be removed by clicking on it and one new movement card from the neutral stack will be added to player stack
     # player one
     # movement_card_play(x,y,player stack list name,list item number,if and elif)
